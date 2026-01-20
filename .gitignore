@@ -1,0 +1,27 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Dropbox conflicts
+*conflicted copy*
+
+# Local development
+.env
+.env.local
+
+# Node (if added later)
+node_modules/
+
+# Human materials - source files, unused assets, backups
+human-materials/
+human-materials-ignore/
+
+# Claude Code
+.claude/
