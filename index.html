@@ -981,11 +981,11 @@
                 }
                 // Step 2: Buy More Snow
                 else if (tutorialStep === 2) {
-                    const panelX = 15;
-                    const panelY = 15;
-                    const itemSize = 130;
-                    const padding = 12;
-                    const gap = 15;
+                    const panelX = SHOP_PANEL_X;
+                    const panelY = SHOP_PANEL_Y;
+                    const itemSize = SHOP_ITEM_SIZE;
+                    const padding = SHOP_PADDING;
+                    const gap = SHOP_GAP;
                     const snowflakeLeft = panelX + padding + itemSize + gap;
                     const snowflakeRight = snowflakeLeft + itemSize;
                     const snowflakeTop = panelY + padding;
@@ -1043,11 +1043,11 @@
             }
 
             // Shop panel dimensions (must match drawShopPanel - horizontal layout)
-            const panelX = 15;
-            const panelY = 15;
-            const itemSize = 130;
-            const padding = 12;
-            const gap = 15;
+            const panelX = SHOP_PANEL_X;
+            const panelY = SHOP_PANEL_Y;
+            const itemSize = SHOP_ITEM_SIZE;
+            const padding = SHOP_PADDING;
+            const gap = SHOP_GAP;
 
             // Check if click is on shop panel (horizontal layout)
             const tupilakLeft = panelX + padding;
@@ -1323,19 +1323,20 @@
             // Draw shop panel
             drawShopPanel();
 
-            // Draw Snow Power display
+            // Draw Snow Power display (below shop panel)
+            const tutorialShopBottom = SHOP_PANEL_Y + SHOP_ITEM_SIZE + SHOP_PADDING * 2;
             const spText = `Snow Power: ${Math.floor(snowPower)}`;
-            ctx.font = 'bold 28px "Averia Libre", Georgia, serif';
+            ctx.font = 'bold 32px "Averia Libre", Georgia, serif';
             ctx.textAlign = 'left';
             ctx.shadowColor = 'rgba(100, 200, 255, 0.8)';
             ctx.shadowBlur = 15;
             ctx.fillStyle = '#fff';
-            ctx.fillText(spText, 20, 165);
+            ctx.fillText(spText, 20, tutorialShopBottom + 35);
             ctx.shadowBlur = 0;
             ctx.strokeStyle = 'rgba(20, 60, 100, 0.8)';
             ctx.lineWidth = 3;
-            ctx.strokeText(spText, 20, 165);
-            ctx.fillText(spText, 20, 165);
+            ctx.strokeText(spText, 20, tutorialShopBottom + 35);
+            ctx.fillText(spText, 20, tutorialShopBottom + 35);
 
             // Tutorial messages and arrows
             ctx.textAlign = 'center';
@@ -1393,22 +1394,15 @@
 
             if (tutorialStep === 2) {
                 // Arrow pointing to More Snow shop item
-                const panelX = 15;
-                const padding = 12;
-                const itemSize = 130;
-                const gap = 15;
-                const snowItemX = panelX + padding + itemSize + gap + itemSize/2;
-                const snowItemY = 15 + padding + itemSize + 20;
+                const snowItemX = SHOP_PANEL_X + SHOP_PADDING + SHOP_ITEM_SIZE + SHOP_GAP + SHOP_ITEM_SIZE/2;
+                const snowItemY = SHOP_PANEL_Y + SHOP_PADDING + SHOP_ITEM_SIZE + 20;
                 drawArrow(snowItemX, snowItemY + 40, snowItemX, snowItemY);
             }
 
             if (tutorialStep === 5) {
                 // Arrow pointing to Tupilaq shop item
-                const panelX = 15;
-                const padding = 12;
-                const itemSize = 130;
-                const tupilakItemX = panelX + padding + itemSize/2;
-                const tupilakItemY = 15 + padding + itemSize + 20;
+                const tupilakItemX = SHOP_PANEL_X + SHOP_PADDING + SHOP_ITEM_SIZE/2;
+                const tupilakItemY = SHOP_PANEL_Y + SHOP_PADDING + SHOP_ITEM_SIZE + 20;
                 drawArrow(tupilakItemX, tupilakItemY + 40, tupilakItemX, tupilakItemY);
             }
 
@@ -1525,27 +1519,28 @@
             drawShopPanel();
 
             // Draw Snow Power display (left side, below shop)
+            const shopPanelBottom = SHOP_PANEL_Y + SHOP_ITEM_SIZE + SHOP_PADDING * 2;
             const spText = `Snow Power: ${Math.floor(snowPower)}`;
-            ctx.font = 'bold 28px "Averia Libre", Georgia, serif';
+            ctx.font = 'bold 32px "Averia Libre", Georgia, serif';
             ctx.textAlign = 'left';
             // Icy glow effect
             ctx.shadowColor = 'rgba(100, 200, 255, 0.8)';
             ctx.shadowBlur = 15;
             ctx.fillStyle = '#fff';
-            ctx.fillText(spText, 20, 165);
+            ctx.fillText(spText, 20, shopPanelBottom + 35);
             // Outline for readability
             ctx.shadowBlur = 0;
             ctx.strokeStyle = 'rgba(20, 60, 100, 0.8)';
             ctx.lineWidth = 3;
-            ctx.strokeText(spText, 20, 165);
-            ctx.fillText(spText, 20, 165);
+            ctx.strokeText(spText, 20, shopPanelBottom + 35);
+            ctx.fillText(spText, 20, shopPanelBottom + 35);
 
             // Draw wave indicator
-            ctx.font = 'bold 22px "Averia Libre", Georgia, serif';
+            ctx.font = 'bold 26px "Averia Libre", Georgia, serif';
             ctx.shadowColor = 'rgba(100, 200, 255, 0.8)';
             ctx.shadowBlur = 10;
             ctx.fillStyle = '#aef';
-            ctx.fillText(`Wave ${wave}/5`, 20, 195);
+            ctx.fillText(`Wave ${wave}/5`, 20, shopPanelBottom + 70);
             ctx.shadowBlur = 0;
 
             // Game over / win messages
@@ -1606,13 +1601,20 @@
             ctx.textAlign = 'left';
         }
 
+        // Shop panel constants (used by drawing and click detection)
+        const SHOP_PANEL_X = 15;
+        const SHOP_PANEL_Y = 15;
+        const SHOP_ITEM_SIZE = 160; // Big item boxes for mobile
+        const SHOP_PADDING = 15;
+        const SHOP_GAP = 15;
+
         // Draw shop panel (horizontal layout)
         function drawShopPanel() {
-            const panelX = 15;
-            const panelY = 15;
-            const itemSize = 130; // Bigger item boxes
-            const padding = 12;
-            const gap = 15;
+            const panelX = SHOP_PANEL_X;
+            const panelY = SHOP_PANEL_Y;
+            const itemSize = SHOP_ITEM_SIZE;
+            const padding = SHOP_PADDING;
+            const gap = SHOP_GAP;
 
             // Icy panel background - horizontal
             ctx.fillStyle = 'rgba(20, 40, 60, 0.85)';
@@ -1660,12 +1662,13 @@
                 }
 
                 // Label and cost
-                ctx.font = 'bold 16px "Averia Libre", Georgia, serif';
+                ctx.font = 'bold 20px "Averia Libre", Georgia, serif';
                 ctx.textAlign = 'center';
                 ctx.fillStyle = canAfford ? '#cef' : '#888';
-                ctx.fillText(label, x + itemSize/2, y + itemSize - 25);
+                ctx.fillText(label, x + itemSize/2, y + itemSize - 30);
                 ctx.fillStyle = canAfford ? '#aef' : '#666';
-                ctx.fillText(cost + ' SP', x + itemSize/2, y + itemSize - 8);
+                ctx.font = 'bold 18px "Averia Libre", Georgia, serif';
+                ctx.fillText(cost + ' SP', x + itemSize/2, y + itemSize - 10);
             }
 
             // Tupilaq item (left)
