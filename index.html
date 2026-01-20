@@ -117,6 +117,9 @@
         // Game dimensions (match your map)
         const WIDTH = 1920;
         const HEIGHT = 1080;
+
+        // Mobile detection for larger touch targets
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 800;
         canvas.width = WIDTH;
         canvas.height = HEIGHT;
 
@@ -769,14 +772,16 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
-                ctx.globalAlpha = 0.8;
+                ctx.globalAlpha = 1.0; // Full brightness
                 ctx.drawImage(this.sprite, -this.size/2, -this.size/2, this.size, this.size);
                 ctx.globalAlpha = 1;
                 ctx.restore();
             }
 
             checkClick(mx, my) {
-                return Math.sqrt(Math.pow(mx - this.x, 2) + Math.pow(my - this.y, 2)) < this.size;
+                // Larger touch target on mobile
+                const touchRadius = isMobile ? this.size * 1.5 : this.size;
+                return Math.sqrt(Math.pow(mx - this.x, 2) + Math.pow(my - this.y, 2)) < touchRadius;
             }
         }
 
@@ -978,7 +983,7 @@
                 else if (tutorialStep === 2) {
                     const panelX = 15;
                     const panelY = 15;
-                    const itemSize = 100;
+                    const itemSize = 130;
                     const padding = 12;
                     const gap = 15;
                     const snowflakeLeft = panelX + padding + itemSize + gap;
@@ -1040,7 +1045,7 @@
             // Shop panel dimensions (must match drawShopPanel - horizontal layout)
             const panelX = 15;
             const panelY = 15;
-            const itemSize = 100;
+            const itemSize = 130;
             const padding = 12;
             const gap = 15;
 
@@ -1390,7 +1395,7 @@
                 // Arrow pointing to More Snow shop item
                 const panelX = 15;
                 const padding = 12;
-                const itemSize = 100;
+                const itemSize = 130;
                 const gap = 15;
                 const snowItemX = panelX + padding + itemSize + gap + itemSize/2;
                 const snowItemY = 15 + padding + itemSize + 20;
@@ -1401,7 +1406,7 @@
                 // Arrow pointing to Tupilaq shop item
                 const panelX = 15;
                 const padding = 12;
-                const itemSize = 100;
+                const itemSize = 130;
                 const tupilakItemX = panelX + padding + itemSize/2;
                 const tupilakItemY = 15 + padding + itemSize + 20;
                 drawArrow(tupilakItemX, tupilakItemY + 40, tupilakItemX, tupilakItemY);
@@ -1605,7 +1610,7 @@
         function drawShopPanel() {
             const panelX = 15;
             const panelY = 15;
-            const itemSize = 100; // Slightly smaller for horizontal layout
+            const itemSize = 130; // Bigger item boxes
             const padding = 12;
             const gap = 15;
 
@@ -1655,12 +1660,12 @@
                 }
 
                 // Label and cost
-                ctx.font = 'bold 13px "Averia Libre", Georgia, serif';
+                ctx.font = 'bold 16px "Averia Libre", Georgia, serif';
                 ctx.textAlign = 'center';
                 ctx.fillStyle = canAfford ? '#cef' : '#888';
-                ctx.fillText(label, x + itemSize/2, y + itemSize - 20);
+                ctx.fillText(label, x + itemSize/2, y + itemSize - 25);
                 ctx.fillStyle = canAfford ? '#aef' : '#666';
-                ctx.fillText(cost + ' SP', x + itemSize/2, y + itemSize - 5);
+                ctx.fillText(cost + ' SP', x + itemSize/2, y + itemSize - 8);
             }
 
             // Tupilaq item (left)
