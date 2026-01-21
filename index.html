@@ -245,6 +245,8 @@
         let wave = 1;
         let gameOver = false;
         let gameWon = false;
+        let lastSnowClickTime = 0; // Track when player last clicked snow
+        let showSnowHint = false; // Show hint to click snow
 
         // Shop/Economy
         let tupilakCost = 50;
@@ -899,6 +901,7 @@
                 gamePhase = 'playing';
                 waveTimer = 0;
                 waveActive = true;
+                lastSnowClickTime = Date.now();
             } else if (urlParams.has('win')) {
                 gamePhase = 'playing';
                 gameWon = true;
@@ -1027,6 +1030,8 @@
                     // Reset wave timer to ensure fresh start
                     waveTimer = 0;
                     waveActive = true;
+                    // Initialize snow click timer so hint doesn't show immediately
+                    lastSnowClickTime = Date.now();
                     // Stop tutorial music after current loop finishes, then start game music
                     stopTutorialMusicAfterLoop(() => {
                         gameMusic.volume = 0.65;
@@ -1080,6 +1085,8 @@
                 if (!flake.collected && flake.checkClick(mx, my)) {
                     flake.collected = true;
                     snowPower += 10;
+                    lastSnowClickTime = Date.now();
+                    showSnowHint = false;
                     return;
                 }
             }
@@ -1150,6 +1157,11 @@
             // Only run game logic during playing phase
             if (gamePhase !== 'playing') return;
             if (gameOver || gameWon) return;
+
+            // Check if player hasn't clicked snow in 5 seconds and there are snowflakes available
+            if (Date.now() - lastSnowClickTime > 5000 && fallingSnowflakes.some(f => !f.collected)) {
+                showSnowHint = true;
+            }
 
             // Wave system - time-based with ramping max enemies
             if (waveActive) {
@@ -1548,6 +1560,24 @@
             ctx.fillStyle = '#aef';
             ctx.fillText(`Wave ${wave}/5`, 20, shopPanelBottom + 70);
             ctx.shadowBlur = 0;
+
+            // Draw snow click hint if player hasn't clicked snow in a while
+            if (showSnowHint && !gameOver && !gameWon) {
+                const pulse = 0.7 + Math.sin(Date.now() / 300) * 0.3;
+                ctx.globalAlpha = pulse;
+                ctx.font = 'bold 36px "Averia Libre", Georgia, serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.shadowColor = 'rgba(100, 200, 255, 0.9)';
+                ctx.shadowBlur = 20;
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = 3;
+                ctx.strokeText('Click snowflakes to earn Snow Power!', WIDTH / 2, HEIGHT - 50);
+                ctx.fillText('Click snowflakes to earn Snow Power!', WIDTH / 2, HEIGHT - 50);
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+                ctx.textAlign = 'left';
+            }
 
             // Game over / win messages
             if (gameOver) {
