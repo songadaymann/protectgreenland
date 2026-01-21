@@ -1294,6 +1294,9 @@
         function drawTutorial() {
             // Draw the game background
             ctx.drawImage(assets.map, 0, 0, WIDTH, HEIGHT);
+            // Darken overlay for better character visibility
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
             ctx.globalAlpha = 0.7;
             ctx.drawImage(assets.roads, 0, 0, WIDTH, HEIGHT);
             ctx.globalAlpha = 1;
@@ -1457,6 +1460,9 @@
 
             // Draw map
             ctx.drawImage(assets.map, 0, 0, WIDTH, HEIGHT);
+            // Darken overlay for better character visibility
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
             // Draw roads overlay
             ctx.globalAlpha = 0.7;
